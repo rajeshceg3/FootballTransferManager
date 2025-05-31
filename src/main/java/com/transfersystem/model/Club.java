@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Entity
 public class Club {
@@ -15,6 +16,8 @@ public class Club {
 
     @NotNull
     private String name;
+
+    private BigDecimal budget;
 
     // Getters and setters
     public Long getId() {
@@ -31,5 +34,13 @@ public class Club {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public BigDecimal getBudget() {
+        return budget;
+    }
+
+    public void setBudget(BigDecimal budget) {
+        this.budget = budget;
     }
 }
