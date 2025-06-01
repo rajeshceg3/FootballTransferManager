@@ -68,9 +68,8 @@ public class TransferController {
         // Validate ToClub
         Club toClub = clubRepository.findById(request.getToClubId())
                 .orElseThrow(() -> new ResourceNotFoundException("ToClub not found with ID: " + request.getToClubId()));
-
         // Check if player is already in an active transfer
-        if (transferRepository.existsByPlayerIdAndStatusIn(player.getId(), ACTIVE_TRANSFER_STATUSES)) {
+        if (transferRepository.existsByPlayer_IdAndStatusIn(player.getId(), ACTIVE_TRANSFER_STATUSES)) {
             throw new IllegalStateException("Player with ID " + player.getId() + " is already in an active transfer. Cannot initiate a new one.");
         }
 
@@ -81,9 +80,9 @@ public class TransferController {
         }
 
         Transfer newTransfer = new Transfer();
-        newTransfer.setPlayerId(player.getId());
-        newTransfer.setFromClubId(fromClub.getId());
-        newTransfer.setToClubId(toClub.getId());
+        newTransfer.setPlayer(player);
+        newTransfer.setFromClub(fromClub);
+        newTransfer.setToClub(toClub);
         newTransfer.setStatus(TransferStatus.DRAFT);
         // Note: Clauses from request.getClauses() are used for fee calculation
         // but not directly stored on the Transfer entity in this version.
@@ -136,16 +135,29 @@ public class TransferController {
         // Call workflow engine to update status to COMPLETED (and persist it)
         transferWorkflowEngine.completeTransfer(transfer);
 
-        // Retrieve entities
-        Player player = playerRepository.findById(transfer.getPlayerId())
-                .orElseThrow(() -> new ResourceNotFoundException("Player not found with ID: " + transfer.getPlayerId()));
-        Club toClub = clubRepository.findById(transfer.getToClubId())
-                .orElseThrow(() -> new ResourceNotFoundException("ToClub not found with ID: " + transfer.getToClubId()));
-        Club fromClub = clubRepository.findById(transfer.getFromClubId())
-                .orElseThrow(() -> new ResourceNotFoundException("FromClub not found with ID: " + transfer.getFromClubId()));
+        // Retrieve entities from the transfer object, assuming they are loaded or accessible
+        // Note: If Player/Club objects within transfer are not fully loaded due to LAZY fetching
+        // and the session is closed (e.g. if this method wasn't @Transactional or transfer was detached),
+        // direct access like transfer.getPlayer().getName() could cause LazyInitializationException.
+        // However, since we are within a @Transactional method and transfer is managed,
+        // these should be accessible, or Hibernate will fetch them.
+        Player player = transfer.getPlayer();
+        Club toClub = transfer.getToClub();
+        Club fromClub = transfer.getFromClub();
+
+        // Validate that related entities are not null, as they are essential for completion
+        if (player == null) {
+            throw new ResourceNotFoundException("Player associated with transfer ID " + transferId + " not found or is null.");
+        }
+        if (toClub == null) {
+            throw new ResourceNotFoundException("ToClub associated with transfer ID " + transferId + " not found or is null.");
+        }
+        if (fromClub == null) {
+            throw new ResourceNotFoundException("FromClub associated with transfer ID " + transferId + " not found or is null.");
+        }
 
         // Update player's current club
-        player.setCurrentClubId(toClub.getId());
+        player.setCurrentClub(toClub);
 
         // Calculate transfer fee (using empty list for clauses as they are not stored on Transfer)
         BigDecimal transferFee = transferFeeCalculator.calculate(player, toClub, List.of());
