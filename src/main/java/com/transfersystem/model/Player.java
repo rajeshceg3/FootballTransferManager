@@ -1,9 +1,13 @@
 package com.transfersystem.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -19,7 +23,9 @@ public class Player {
 
     private BigDecimal currentMarketValue;
 
-    private Long currentClubId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "current_club_id")
+    private Club currentClub;
 
     // Getters and setters
     public Long getId() {
@@ -46,11 +52,11 @@ public class Player {
         this.currentMarketValue = currentMarketValue;
     }
 
-    public Long getCurrentClubId() {
-        return currentClubId;
+    public Club getCurrentClub() {
+        return currentClub;
     }
 
-    public void setCurrentClubId(Long currentClubId) {
-        this.currentClubId = currentClubId;
+    public void setCurrentClub(Club currentClub) {
+        this.currentClub = currentClub;
     }
 }
