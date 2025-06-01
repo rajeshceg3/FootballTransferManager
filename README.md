@@ -65,6 +65,42 @@ To execute the unit and integration tests for the application:
     ```
     *(Note: `clauses` are currently used for fee calculation if applicable but not directly stored as a list within the `Transfer` entity itself in the initial version. The DTO `ContractClauseDto` is used for request payload).*
 
+### Get Transfer Details
+-   **Endpoint**: `GET /api/v1/transfers/{transferId}`
+-   **Description**: Retrieves the details of a specific transfer.
+-   **Path Variable**:
+    -   `transferId` (UUID): The unique identifier of the transfer.
+
+### Submit Transfer for Review
+-   **Endpoint**: `PATCH /api/v1/transfers/{transferId}/submit`
+-   **Description**: Moves a transfer from `DRAFT` to `SUBMITTED` status.
+-   **Path Variable**:
+    -   `transferId` (UUID): The unique identifier of the transfer.
+
+### Move Transfer to Negotiation
+-   **Endpoint**: `PATCH /api/v1/transfers/{transferId}/negotiate`
+-   **Description**: Moves a transfer from `SUBMITTED` to `NEGOTIATION` status.
+-   **Path Variable**:
+    -   `transferId` (UUID): The unique identifier of the transfer.
+
+### Approve Transfer
+-   **Endpoint**: `PATCH /api/v1/transfers/{transferId}/approve`
+-   **Description**: Moves a transfer from `NEGOTIATION` to `APPROVED` status.
+-   **Path Variable**:
+    -   `transferId` (UUID): The unique identifier of the transfer.
+
+### Complete Transfer
+-   **Endpoint**: `PATCH /api/v1/transfers/{transferId}/complete`
+-   **Description**: Moves a transfer from `APPROVED` to `COMPLETED` status. This also updates the player's current club and adjusts club budgets based on the transfer fee.
+-   **Path Variable**:
+    -   `transferId` (UUID): The unique identifier of the transfer.
+
+### Cancel Transfer
+-   **Endpoint**: `PATCH /api/v1/transfers/{transferId}/cancel`
+-   **Description**: Moves a transfer to `CANCELED` status from an active state (e.g., `DRAFT`, `SUBMITTED`, `NEGOTIATION`, `APPROVED`).
+-   **Path Variable**:
+    -   `transferId` (UUID): The unique identifier of the transfer.
+
 ## Project Structure
 The project follows a standard layered architecture commonly used in Spring Boot applications:
 -   `com.transfersystem.controller`: Contains REST API controllers that handle incoming HTTP requests and delegate to services.
