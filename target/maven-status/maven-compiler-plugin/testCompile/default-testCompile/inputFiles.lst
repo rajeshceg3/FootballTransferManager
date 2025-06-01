@@ -1,0 +1,3 @@
+/app/src/test/java/com/transfersystem/controller/TransferControllerTest.java
+/app/src/test/java/com/transfersystem/service/TransferWorkflowEngineTest.java
+/app/src/test/java/com/transfersystem/service/TransferFeeCalculatorTest.java
