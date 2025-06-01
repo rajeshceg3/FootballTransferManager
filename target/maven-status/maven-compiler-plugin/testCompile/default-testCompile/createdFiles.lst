@@ -1,0 +1,3 @@
+com/transfersystem/controller/TransferControllerTest.class
+com/transfersystem/service/TransferFeeCalculatorTest.class
+com/transfersystem/service/TransferWorkflowEngineTest.class
