@@ -40,6 +40,51 @@ To execute the unit and integration tests for the application:
     ```
     Test results will be displayed in the console, and detailed reports can be found in the `target/surefire-reports` directory.
 
+## Frontend Application
+
+This project includes a React-based frontend application to interact with the backend API, providing a user interface for managing transfers, players, and clubs.
+
+### Prerequisites for Frontend
+
+*   [Node.js](https://nodejs.org/) (LTS version recommended, e.g., v18.x or v20.x)
+*   [npm](https://www.npmjs.com/) (comes with Node.js) or [yarn](https://yarnpkg.com/)
+
+### Running the Frontend
+
+1.  **Ensure the Backend is Running:**
+    The backend Java Spring Boot application **must** be running, as the frontend makes API calls to it. By default, the backend runs on `http://localhost:8080`.
+
+2.  **Navigate to the frontend directory:**
+    From the project's root directory, run:
+    ```bash
+    cd frontend
+    ```
+
+3.  **Install dependencies** (if you haven't already):
+    Using npm:
+    ```bash
+    npm install
+    ```
+    Or using yarn:
+    ```bash
+    yarn install
+    ```
+
+4.  **Start the React development server:**
+    Using npm:
+    ```bash
+    npm start
+    ```
+    Or using yarn:
+    ```bash
+    yarn start
+    ```
+    This will typically open the application in your default web browser at `http://localhost:3000`. If this port is in use, you'll be prompted to use an alternative port.
+
+    The frontend development server uses a proxy (configured in `frontend/package.json`) to forward API requests to the backend running on `http://localhost:8080`, avoiding CORS issues during development.
+
+For more detailed information about the frontend application, including build instructions, see the `frontend/README.md` file.
+
 ## Available API Endpoints
 
 ### Initiate Transfer
