@@ -101,6 +101,94 @@ To execute the unit and integration tests for the application:
 -   **Path Variable**:
     -   `transferId` (UUID): The unique identifier of the transfer.
 
+### Player Management
+
+#### Create Player
+-   **Endpoint**: `POST /api/v1/players`
+-   **Description**: Creates a new player.
+-   **Request Body Example**:
+    ```json
+    {
+        "name": "John Doe",
+        "currentMarketValue": 1000000.00,
+        "currentClubId": 1
+    }
+    ```
+    *(Note: `currentClubId` is optional. If provided, the player will be associated with the existing club with that ID.)*
+
+#### Get All Players
+-   **Endpoint**: `GET /api/v1/players`
+-   **Description**: Retrieves a list of all players.
+
+#### Get Player by ID
+-   **Endpoint**: `GET /api/v1/players/{playerId}`
+-   **Description**: Retrieves a specific player by their ID.
+-   **Path Variable**:
+    -   `playerId` (Long): The unique identifier of the player.
+
+#### Update Player
+-   **Endpoint**: `PUT /api/v1/players/{playerId}`
+-   **Description**: Updates an existing player's details.
+-   **Path Variable**:
+    -   `playerId` (Long): The unique identifier of the player.
+-   **Request Body Example**:
+    ```json
+    {
+        "name": "John Doe Updated",
+        "currentMarketValue": 1200000.00,
+        "currentClubId": 2
+    }
+    ```
+
+#### Delete Player
+-   **Endpoint**: `DELETE /api/v1/players/{playerId}`
+-   **Description**: Deletes a player by their ID.
+-   **Path Variable**:
+    -   `playerId` (Long): The unique identifier of the player.
+
+
+### Club Management
+
+#### Create Club
+-   **Endpoint**: `POST /api/v1/clubs`
+-   **Description**: Creates a new club.
+-   **Request Body Example**:
+    ```json
+    {
+        "name": "FC Example",
+        "budget": 50000000.00
+    }
+    ```
+
+#### Get All Clubs
+-   **Endpoint**: `GET /api/v1/clubs`
+-   **Description**: Retrieves a list of all clubs.
+
+#### Get Club by ID
+-   **Endpoint**: `GET /api/v1/clubs/{clubId}`
+-   **Description**: Retrieves a specific club by its ID.
+-   **Path Variable**:
+    -   `clubId` (Long): The unique identifier of the club.
+
+#### Update Club
+-   **Endpoint**: `PUT /api/v1/clubs/{clubId}`
+-   **Description**: Updates an existing club's details.
+-   **Path Variable**:
+    -   `clubId` (Long): The unique identifier of the club.
+-   **Request Body Example**:
+    ```json
+    {
+        "name": "FC Example United",
+        "budget": 55000000.00
+    }
+    ```
+
+#### Delete Club
+-   **Endpoint**: `DELETE /api/v1/clubs/{clubId}`
+-   **Description**: Deletes a club by its ID.
+-   **Path Variable**:
+    -   `clubId` (Long): The unique identifier of the club.
+
 ## Project Structure
 The project follows a standard layered architecture commonly used in Spring Boot applications:
 -   `com.transfersystem.controller`: Contains REST API controllers that handle incoming HTTP requests and delegate to services.

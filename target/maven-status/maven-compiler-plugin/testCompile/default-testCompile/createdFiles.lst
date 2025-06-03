@@ -1,3 +1,7 @@
-com/transfersystem/controller/TransferControllerTest.class
-com/transfersystem/service/TransferFeeCalculatorTest.class
 com/transfersystem/service/TransferWorkflowEngineTest.class
+com/transfersystem/service/ClubServiceTest.class
+com/transfersystem/service/TransferFeeCalculatorTest.class
+com/transfersystem/controller/ClubControllerTest.class
+com/transfersystem/controller/TransferControllerTest.class
+com/transfersystem/controller/PlayerControllerTest.class
+com/transfersystem/service/PlayerServiceTest.class

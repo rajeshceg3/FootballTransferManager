@@ -1,3 +1,7 @@
+/app/src/test/java/com/transfersystem/controller/PlayerControllerTest.java
+/app/src/test/java/com/transfersystem/controller/ClubControllerTest.java
 /app/src/test/java/com/transfersystem/controller/TransferControllerTest.java
+/app/src/test/java/com/transfersystem/service/PlayerServiceTest.java
 /app/src/test/java/com/transfersystem/service/TransferWorkflowEngineTest.java
 /app/src/test/java/com/transfersystem/service/TransferFeeCalculatorTest.java
+/app/src/test/java/com/transfersystem/service/ClubServiceTest.java

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.transfersystem.service.PlayerServiceTest
+-------------------------------------------------------------------------------
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.139 s -- in com.transfersystem.service.PlayerServiceTest
