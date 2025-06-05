@@ -15,19 +15,15 @@ import ClubListPage from './components/ClubListPage';
 import CreateClubPage from './components/CreateClubPage';
 import EditClubPage from './components/EditClubPage';
 
-const mainContentStyle = {
-  flexGrow: 1,
-  paddingTop: '1.5rem',
-  paddingBottom: '1.5rem',
-  backgroundColor: '#ffffff',
-};
+// mainContentStyle object is removed, styles are now in index.css under .app-main-content
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Header />
-        <main style={mainContentStyle}>
+        {/* Applied .app-main-content class here */}
+        <main className="app-main-content">
           <div className="container">
             <Routes>
               {/* Transfer Routes */}

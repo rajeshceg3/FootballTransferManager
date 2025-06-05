@@ -84,29 +84,22 @@ function NewTransferPage() {
     }
   };
 
-  // Styles that are more specific to this page's layout
-  const formStyle = { maxWidth: '700px', margin: '0 auto', padding: '20px', background: '#fff', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' };
-  const inputGroupStyle = { marginBottom: '1.25rem' };
-  const clauseSectionStyle = { border: '1px solid #e0e0e0', padding: '15px', marginTop: '20px', borderRadius: '5px', background: '#f9f9f9' };
-  const clauseItemStyle = { display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '10px' };
-  const clauseInputStyle = { flexGrow: 1}; // Input elements will use global styles
-  const clauseActionsStyle = { marginTop: '10px' };
+  // Inline styles have been moved to index.css
 
   return (
-    <div style={formStyle}>
-      <h2 style={{textAlign: 'center', marginBottom: '1.5rem'}}>Initiate New Transfer</h2>
+    <div className="form-card">
+      <h2 className="text-center mb-3">Initiate New Transfer</h2>
       <form onSubmit={handleSubmit}>
-        <div style={inputGroupStyle}>
+        <div className="input-group">
           <label htmlFor="player">Player:</label>
           <PlayerDropdown
             selectedPlayerId={selectedPlayerId}
             onChange={setSelectedPlayerId}
             disabled={isSubmitting}
-            // style prop will be handled by global input/select styles in index.css
           />
         </div>
 
-        <div style={inputGroupStyle}>
+        <div className="input-group">
           <label htmlFor="fromClub">From Club:</label>
           <ClubDropdown
             selectedClubId={selectedFromClubId}
@@ -116,7 +109,7 @@ function NewTransferPage() {
           />
         </div>
 
-        <div style={inputGroupStyle}>
+        <div className="input-group">
           <label htmlFor="toClub">To Club:</label>
           <ClubDropdown
             selectedClubId={selectedToClubId}
@@ -126,16 +119,19 @@ function NewTransferPage() {
           />
         </div>
 
-        <div style={clauseSectionStyle}>
-          <h3 style={{ marginTop: 0, marginBottom: '1rem', fontSize: '1.2rem' }}>Contract Clauses</h3>
+        <div className="clause-section">
+          <h3>Contract Clauses</h3> {/* Styling for h3 in .clause-section is in index.css */}
+          <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '-0.75rem', marginBottom: '1rem' }}>
+            Clauses defined here are used for transfer fee estimation. They are not stored as part of the transfer record itself.
+          </p>
           {clauses.map((clause, index) => (
-            <div key={index} style={clauseItemStyle}>
+            <div key={index} className="clause-item-row">
               <input
                 type="text"
                 placeholder="Clause Type (e.g., SELL_ON, BONUS)"
                 value={clause.type}
                 onChange={(e) => handleClauseChange(index, 'type', e.target.value)}
-                style={clauseInputStyle} // Basic flex grow
+                // flex-grow is handled by .clause-item-row input[type="text"] in index.css
                 disabled={isSubmitting}
               />
               <input
@@ -143,7 +139,7 @@ function NewTransferPage() {
                 placeholder="Percentage (%)"
                 value={clause.percentage}
                 onChange={(e) => handleClauseChange(index, 'percentage', e.target.value)}
-                style={{width: '130px'}} // Specific width
+                style={{width: '130px'}} // Specific width, kept inline
                 min="0" max="100" step="0.01"
                 disabled={isSubmitting}
               />
@@ -152,26 +148,27 @@ function NewTransferPage() {
                 placeholder="Amount"
                 value={clause.amount}
                 onChange={(e) => handleClauseChange(index, 'amount', e.target.value)}
-                style={{width: '130px'}} // Specific width
+                style={{width: '130px'}} // Specific width, kept inline
                 min="0" step="0.01"
                 disabled={isSubmitting}
               />
+              {/* Smaller button style for remove is in .clause-item-row .button-danger */}
               <button type="button" onClick={() => handleRemoveClause(index)} className="button-danger" disabled={isSubmitting}>Remove</button>
             </div>
           ))}
-          <div style={clauseActionsStyle}>
+          <div className="clause-actions">
+             {/* Smaller button style for add is in .clause-actions .button-success */}
             <button type="button" onClick={handleAddClause} className="button-success" disabled={isSubmitting}>Add Clause</button>
           </div>
         </div>
 
-        {submitError && <p className="error-message mt-2">{submitError}</p>}
+        {submitError && <p className="error-message text-center mt-2">{submitError}</p>}
 
         {isSubmitting && <LoadingSpinner text="Submitting transfer..." />}
 
         <button
             type="submit"
-            className="button-primary mt-3"
-            style={{width: '100%', padding: '12px'}}
+            className="button-primary w-100 button-lg mt-3" // Using utility classes
             disabled={isSubmitting || !selectedPlayerId || !selectedFromClubId || !selectedToClubId}
         >
           {isSubmitting ? 'Processing...' : 'Initiate Transfer'}

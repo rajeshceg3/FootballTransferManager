@@ -11,4 +11,5 @@ import java.util.UUID;
 @Repository
 public interface TransferRepository extends JpaRepository<Transfer, UUID> {
     boolean existsByPlayer_IdAndStatusIn(Long playerId, List<TransferStatus> statuses);
+    List<Transfer> findAllByOrderByInitiationTimestampDesc();
 }

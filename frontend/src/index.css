@@ -1,8 +1,14 @@
 /* Global Resets and Base Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Oxygen',
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -212,6 +218,119 @@ select {
 .mb-2 { margin-bottom: 0.5rem !important; }
 .mb-3 { margin-bottom: 1rem !important; }
 
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  background-color: #fff; /* Optional: if tables should have a white background */
+}
+
+th, td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6; /* Default border for rows */
+  text-align: left;
+}
+
+thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6; /* Heavier border for header bottom */
+  background-color: #f8f9fa; /* Light background for header */
+  color: #1a253c;
+  font-weight: 600;
+}
+
+tbody tr:nth-of-type(odd) {
+  /* background-color: rgba(0, 0, 0, 0.02); */ /* Subtle striping - optional */
+}
+
+tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Hover effect for rows */
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 0.3em 0.65em; /* Adjusted padding */
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 0.375rem; /* Consistent with button border-radius */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block; /* Ensure padding and background are applied correctly */
+  line-height: 1; /* Adjust line height for small badges */
+  text-align: center;
+  white-space: nowrap;
+}
+
+.status-DRAFT { background-color: #e0e0e0; color: #333; } /* Grey */
+.status-SUBMITTED { background-color: #ffc107; color: #333; } /* Amber/Gold */
+.status-NEGOTIATION { background-color: #17a2b8; color: white; } /* Info Blue */
+.status-APPROVED { background-color: #28a745; color: white; } /* Success Green (same as button) */
+.status-COMPLETED { background-color: #007bff; color: white; } /* Primary Blue */
+.status-CANCELLED { background-color: #dc3545; color: white; } /* Danger Red (same as button) */
+.status-REJECTED { background-color: #6c757d; color: white; } /* Secondary/Grey */
+/* Add more statuses based on TransferStatus.java if they exist */
+
+/* Header Styles */
+.app-header {
+  background-color: #1a253c; /* Dark blue background */
+  color: #ffffff;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.app-header .container { /* Specificity for container within header */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+.app-header-logo {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-decoration: none;
+}
+.app-header-logo:hover {
+  color: #e0e0e0; /* Slightly lighter on hover */
+  text-decoration: none;
+}
+
+.app-header-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center; /* Center nav items if they wrap */
+  list-style: none; /* Remove default list styles if using <ul> */
+  padding-left: 0; /* Remove default padding if using <ul> */
+  margin: 0;
+}
+
+.app-header-nav-item {
+  margin: 0.25rem 0; /* Margin for wrapping */
+}
+
+.app-header-nav-link {
+  color: #ffffff;
+  margin: 0 10px; /* Spacing between links */
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.5rem 0.25rem;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.app-header-nav-link:hover,
+.app-header-nav-link.active { /* Style for active NavLink */
+  color: #00aeff; /* Brighter blue for hover/active */
+  border-bottom: 2px solid #00aeff; /* Highlight with border */
+  text-decoration: none;
+}
+
+
 /* Basic Responsive Design */
 @media (max-width: 768px) {
   h1 { font-size: 1.8rem; }
@@ -241,4 +360,318 @@ select {
   .App {
     /* Allow content to be scrollable if it overflows */
   }
+
+  .status-badge {
+    font-size: 0.7rem; /* Slightly smaller badges on small screens */
+    padding: 0.25em 0.5em;
+  }
+
+  th, td {
+    padding: 0.5rem; /* Reduce padding for table cells on smaller screens */
+  }
+
+  .app-header .container {
+    flex-direction: column; /* Stack logo and nav on small screens */
+    align-items: center;
+  }
+
+  .app-header-logo {
+    margin-bottom: 0.5rem; /* Space between logo and nav when stacked */
+  }
+
+  .app-header-nav {
+    justify-content: center; /* Ensure nav items are centered */
+    width: 100%; /* Nav takes full width */
+  }
+
+  .app-header-nav-link {
+    margin: 0.5rem 10px; /* Adjust margin for stacked links */
+  }
+}
+
+/* Detail Page Specific Styles */
+.details-card {
+  max-width: 750px;
+  margin: 1.5rem auto; /* Using utility class mt-3, mb-3 might be an alternative in component */
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.detail-section {
+  margin-bottom: 1.5rem; /* Increased margin */
+  padding-bottom: 1.5rem; /* Increased padding */
+  border-bottom: 1px solid #eee;
+}
+.detail-section:last-of-type { /* Remove border for the last section */
+  border-bottom: none;
+  margin-bottom: 0; /* No margin if it's the last visual element before actions */
+  padding-bottom: 0;
+}
+
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Align items to start for multi-line values */
+  padding: 0.6rem 0; /* Adjusted padding */
+  flex-wrap: wrap; /* Allow wrapping for long labels/values */
+}
+
+.detail-label {
+  font-weight: bold;
+  color: #333;
+  margin-right: 10px;
+  flex-shrink: 0; /* Prevent label from shrinking */
+}
+
+.detail-value {
+  color: #555;
+  text-align: right;
+  word-break: break-word; /* Break long words/IDs */
+}
+
+.clauses-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+}
+
+.clause-item {
+  background: #f9f9f9;
+  padding: 10px 12px; /* Adjusted padding */
+  border-radius: 4px;
+  margin-bottom: 8px; /* Increased margin */
+  border: 1px solid #eee;
+}
+.clause-item strong { /* Make type, percentage, amount labels bold within clause item */
+    color: #333;
+}
+.clause-item span { /* Spacing for multiple details in one clause item */
+    margin-left: 15px;
+}
+.clause-item span:first-of-type {
+    margin-left: 0; /* No margin for the first detail if it's wrapped in span */
+}
+
+
+.action-buttons-container {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+/* Utility classes for spacing if not already present or need more specific ones */
+.ml-1 { margin-left: 0.25rem !important; }
+.ml-2 { margin-left: 0.5rem !important; }
+.ml-3 { margin-left: 1rem !important; }
+
+/* Form Card Styles (for pages like NewTransferPage) */
+.form-card {
+  max-width: 700px;
+  margin: 1.5rem auto;
+  padding: 25px; /* Slightly more padding for forms */
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* Input Group (already have label and input styles, this is for spacing) */
+.input-group {
+  margin-bottom: 1.25rem;
+}
+.input-group label { /* Ensure label has some space if input is not display block or is side-by-side */
+  margin-bottom: 0.5rem; /* Already there globally, but good to note */
+}
+
+/* Clause Section in Forms */
+.clause-section {
+  border: 1px solid #e0e0e0;
+  padding: 20px; /* Increased padding */
+  margin-top: 25px; /* Increased margin */
+  border-radius: 5px;
+  background: #fdfdfd; /* Slightly off-white */
+}
+.clause-section h3 { /* Specific styling for heading within clause section */
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem; /* Matching subtask description */
+  color: #333;
+}
+
+.clause-item-row {
+  display: flex;
+  gap: 10px; /* Space between items in the row */
+  align-items: center; /* Align items vertically */
+  margin-bottom: 10px;
+}
+.clause-item-row input[type="text"] {
+  flex-grow: 1; /* Allow type input to take available space */
+}
+/* Specific widths for percentage/amount inputs are kept inline in JSX for now due to their specificity */
+
+.clause-actions {
+  margin-top: 15px; /* Adjusted margin */
+  text-align: right; /* Align add button to the right */
+}
+.clause-actions .button-success { /* Make add clause button a bit smaller */
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+.clause-item-row .button-danger { /* Make remove button a bit smaller */
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+/* Utility for full width */
+.w-100 {
+  width: 100% !important;
+}
+
+/* Larger button padding */
+.button-lg {
+  padding: 12px 20px !important; /* Match the 12px from inline style */
+  font-size: 1.1rem !important; /* Slightly larger font for larger button */
+}
+
+/* Empty State Container Styling */
+.empty-state-container {
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 20px;
+  background-color: #fff; /* White background for the empty state message area */
+  border-radius: 8px; /* Consistent with cards */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Softer shadow */
+}
+
+.empty-state-container p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.empty-state-container .button-primary {
+  font-size: 1rem; /* Ensure button size is appropriate */
+}
+
+/* Page Header Styling (for list pages with title and action button) */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  gap: 10px; /* Add gap for wrapped items */
+}
+.page-header h2 {
+  margin-bottom: 0; /* Remove default bottom margin from h2 when in page-header */
+}
+
+/* Table action buttons - making them a bit smaller */
+.table td .button-secondary,
+.table td .button-danger {
+  padding: 5px 10px;
+  font-size: 0.875rem;
+  margin-right: 5px; /* Add some space between buttons */
+}
+.table td .button-danger:last-child {
+  margin-right: 0;
+}
+
+/* App Main Content Area */
+.app-main-content {
+  flex-grow: 1;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  background-color: #ffffff; /* White background for the main content area */
+}
+/* Ensure container within main content has some vertical breathing room if pages don't add it */
+.app-main-content .container {
+  min-height: calc(100vh - (/* Header height approx */ 70px) - (/* Footer height approx */ 60px) - (/* Main padding */ 3rem));
+}
+
+/* Footer Styles */
+.app-footer {
+  background-color: #e9ecef; /* Light grey */
+  color: #495057; /* Dark grey text */
+  padding: 1.5rem 0;
+  text-align: center;
+  border-top: 1px solid #ced4da; /* Subtle top border */
+  margin-top: auto; /* Pushes footer to bottom in App.js flex container */
+}
+
+.app-footer .container p { /* Targeting p within footer's container for specificity */
+  margin: 0;
+  font-size: 0.9rem;
+}
+.app-footer a { /* Example if links were added to footer */
+  color: #007bff;
+}
+.app-footer a:hover {
+  color: #0056b3;
+}
+
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1050; /* High z-index to appear above other content */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between toasts */
+  width: auto; /* Adjust width based on content or set a max-width */
+  max-width: 300px; /* Example max-width */
+}
+
+.toast {
+  padding: 12px 18px; /* Adjusted padding */
+  border-radius: 5px;
+  color: white;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15); /* Slightly more pronounced shadow */
+  opacity: 0;
+  transform: translateX(100%);
+  /* Removed animation from here, will be controlled by 'visible' class timing if needed */
+  /* For this setup, animation is mostly about the transition property */
+  transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
+  overflow: hidden; /* Ensure content doesn't spill during animation */
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Keyframes animation (alternative or complementary to transition) */
+/* @keyframes toast-slide-in {
+  to { opacity: 1; transform: translateX(0); }
+}
+.toast.animate-slide {
+  animation: toast-slide-in 0.5s forwards;
+} */
+
+
+.toast.success { background-color: #4CAF50; } /* Green */
+.toast.error { background-color: #F44336; } /* Red */
+.toast.info { background-color: #2196F3; } /* Blue */
+.toast.warning { background-color: #ff9800; } /* Orange */
+
+/* Optional: Close button styling within toast */
+.toast-close-button {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  float: right; /* Position to the right */
+  font-size: 1.2rem;
+  line-height: 1;
+  margin-left: 15px;
+  padding: 0;
+  opacity: 0.8;
+}
+.toast-close-button:hover {
+  opacity: 1;
 }

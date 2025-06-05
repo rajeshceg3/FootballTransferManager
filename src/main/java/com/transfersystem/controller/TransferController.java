@@ -55,6 +55,15 @@ public class TransferController {
         this.transferFeeCalculator = transferFeeCalculator;
     }
 
+    @GetMapping
+    public ResponseEntity<List<Transfer>> getAllTransfers() {
+        List<Transfer> transfers = transferRepository.findAllByOrderByInitiationTimestampDesc();
+        if (transfers.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(transfers);
+    }
+
     @PostMapping
     public ResponseEntity<Transfer> initiateTransfer(@RequestBody InitiateTransferRequest request) {
         // Validate Player

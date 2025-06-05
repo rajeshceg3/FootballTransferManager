@@ -47,14 +47,13 @@ function CreatePlayerPage() {
     }
   };
 
-  const formStyle = { maxWidth: '600px', margin: '20px auto', padding: '20px', background: '#fff', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' };
-  const inputGroupStyle = { marginBottom: '1.25rem' };
+  // formStyle and inputGroupStyle constants are removed, using CSS classes instead.
 
   return (
-    <div style={formStyle}>
-      <h2 style={{textAlign: 'center', marginBottom: '1.5rem'}}>Create New Player</h2>
+    <div className="form-card"> {/* Applied .form-card class */}
+      <h2 className="text-center mb-3">Create New Player</h2> {/* Applied utility classes */}
       <form onSubmit={handleSubmit}>
-        <div style={inputGroupStyle}>
+        <div className="input-group"> {/* Applied .input-group class */}
           <label htmlFor="name">Player Name:</label>
           <input
             type="text"
@@ -63,10 +62,11 @@ function CreatePlayerPage() {
             onChange={(e) => setName(e.target.value)}
             required
             disabled={isSubmitting}
+            // Inputs will use global styles from index.css
           />
         </div>
 
-        <div style={inputGroupStyle}>
+        <div className="input-group"> {/* Applied .input-group class */}
           <label htmlFor="marketValue">Market Value:</label>
           <input
             type="number"
@@ -80,9 +80,9 @@ function CreatePlayerPage() {
           />
         </div>
 
-        <div style={inputGroupStyle}>
+        <div className="input-group"> {/* Applied .input-group class */}
           <label htmlFor="club">Assign to Club (Optional):</label>
-          <ClubDropdown
+          <ClubDropdown // This component should use global select styles
             selectedClubId={clubId}
             onChange={setClubId}
             disabled={isSubmitting}
@@ -90,14 +90,13 @@ function CreatePlayerPage() {
           />
         </div>
 
-        {error && <p className="error-message mt-2">{error}</p>}
+        {error && <p className="error-message text-center mt-2">{error}</p>} {/* Added text-center */}
 
         {isSubmitting && <LoadingSpinner text="Creating player..." />}
 
         <button
             type="submit"
-            className="button-primary mt-3"
-            style={{width: '100%', padding: '12px'}}
+            className="button-primary w-100 button-lg mt-3" // Applied utility classes for styling
             disabled={isSubmitting}
         >
           {isSubmitting ? 'Processing...' : 'Create Player'}

@@ -39,67 +39,69 @@ function ClubListPage() {
     }
   };
 
-  const tableStyle = { width: '100%', borderCollapse: 'collapse', marginTop: '20px' };
-  const thStyle = { borderBottom: '2px solid #ddd', padding: '12px', textAlign: 'left', backgroundColor: '#f8f9fa'};
-  const tdStyle = { borderBottom: '1px solid #eee', padding: '10px' };
-  const actionButtonStyle = { marginRight: '8px', padding: '6px 10px', fontSize: '0.85rem' };
-
+  // Inline styles (tableStyle, thStyle, tdStyle, actionButtonStyle) are removed
+  // Styles will be handled by index.css (table, .table-responsive, .page-header, .empty-state-container)
 
   if (loading) {
     return <LoadingSpinner text="Loading clubs..." />;
   }
 
   return (
-    <div className="container mt-3">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+    <div className="container mt-3 mb-3"> {/* Added mb-3 for consistency */}
+      <div className="page-header">
         <h2>Manage Clubs</h2>
         <Link to="/clubs/new" className="button-link button-primary">
           Create New Club
         </Link>
       </div>
 
-      {error && <p className="error-message">{error}</p>}
+      {error && <p className="error-message text-center">{error}</p>} {/* Added text-center */}
 
-      {clubs.length === 0 && !loading && !error && (
-        <p>No clubs found. <Link to="/clubs/new">Create one now!</Link></p>
-      )}
-
-      {clubs.length > 0 && (
-        <table style={tableStyle}>
-          <thead>
-            <tr>
-              <th style={thStyle}>ID</th>
-              <th style={thStyle}>Name</th>
-              <th style={thStyle}>Budget</th>
-              <th style={thStyle}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clubs.map(club => (
-              <tr key={club.id}>
-                <td style={tdStyle}>{club.id}</td>
-                <td style={tdStyle}>{club.name}</td>
-                <td style={tdStyle}>${club.budget?.toLocaleString() || 'N/A'}</td>
-                <td style={tdStyle}>
-                  <button
-                    onClick={() => navigate(`/clubs/edit/${club.id}`)}
-                    className="button-secondary"
-                    style={actionButtonStyle}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeleteClub(club.id)}
-                    className="button-danger"
-                    style={actionButtonStyle}
-                  >
-                    Delete
-                  </button>
-                </td>
+      {clubs.length === 0 && !loading && !error ? (
+        <div className="empty-state-container">
+          <p>No clubs found at the moment.</p>
+          <Link to="/clubs/new" className="button-link button-primary">
+            Add Your First Club
+          </Link>
+        </div>
+      ) : clubs.length > 0 && (
+        <div className="table-responsive">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Budget</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {clubs.map(club => (
+                <tr key={club.id}>
+                  <td>{club.id}</td>
+                  <td>{club.name}</td>
+                  <td>${club.budget?.toLocaleString() || 'N/A'}</td>
+                  <td>
+                    <button
+                      onClick={() => navigate(`/clubs/edit/${club.id}`)}
+                      className="button-secondary"
+                      // Inline style removed, relying on .table td .button-secondary from index.css
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClub(club.id)}
+                      className="button-danger"
+                      // Inline style removed, relying on .table td .button-danger from index.css
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

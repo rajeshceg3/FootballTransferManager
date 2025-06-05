@@ -68,28 +68,28 @@ function EditClubPage() {
     }
   };
 
-  const formStyle = { maxWidth: '600px', margin: '20px auto', padding: '20px', background: '#fff', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' };
-  const inputGroupStyle = { marginBottom: '1.25rem' };
+  // formStyle and inputGroupStyle constants are removed, using CSS classes instead.
 
   if (loading) {
     return <LoadingSpinner text={`Loading club data for ID ${clubId}...`} />;
   }
 
-  if (error && !isSubmitting) {
+  // Handling for initial fetch error
+  if (error && !isSubmitting && !name) { // Check if name is not set, indicating fetch failure before form can be shown
     return (
-        <div style={formStyle}>
-            <h2 style={{textAlign: 'center', color: 'red'}}>Error</h2>
+        <div className="form-card text-center"> {/* Centering content in the card */}
+            <h2 className="text-center mb-3">Error Loading Club</h2>
             <p className="error-message">{error}</p>
-            <button onClick={() => navigate('/clubs')} className="button-secondary">Back to Club List</button>
+            <button onClick={() => navigate('/clubs')} className="button-secondary mt-3">Back to Club List</button>
         </div>
     );
   }
 
   return (
-    <div style={formStyle}>
-      <h2 style={{textAlign: 'center', marginBottom: '1.5rem'}}>Edit Club (ID: {clubId})</h2>
+    <div className="form-card"> {/* Applied .form-card class */}
+      <h2 className="text-center mb-3">Edit Club (ID: {clubId})</h2> {/* Applied utility classes */}
       <form onSubmit={handleSubmit}>
-        <div style={inputGroupStyle}>
+        <div className="input-group"> {/* Applied .input-group class */}
           <label htmlFor="name">Club Name:</label>
           <input
             type="text"
@@ -98,10 +98,11 @@ function EditClubPage() {
             onChange={(e) => setName(e.target.value)}
             required
             disabled={isSubmitting}
+            // Inputs will use global styles from index.css
           />
         </div>
 
-        <div style={inputGroupStyle}>
+        <div className="input-group"> {/* Applied .input-group class */}
           <label htmlFor="budget">Budget:</label>
           <input
             type="number"
@@ -116,15 +117,17 @@ function EditClubPage() {
           />
         </div>
 
-        {error && isSubmitting && <p className="error-message mt-2">{error}</p>}
+        {/* Display submission error here if it occurs during submission process */}
+        {error && isSubmitting && <p className="error-message text-center mt-2">{error}</p>}
+        {error && !isSubmitting && name && <p className="error-message text-center mt-2">{error}</p>} {/* Show error if form was populated but submission failed */}
+
 
         {isSubmitting && <LoadingSpinner text="Updating club..." />}
 
         <button
             type="submit"
-            className="button-primary mt-3"
-            style={{width: '100%', padding: '12px'}}
-            disabled={isSubmitting || loading}
+            className="button-primary w-100 button-lg mt-3" // Applied utility classes for styling
+            disabled={isSubmitting || loading} // Keep loading disable as fetch might still be considered active by some logic
         >
           {isSubmitting ? 'Processing...' : 'Update Club'}
         </button>

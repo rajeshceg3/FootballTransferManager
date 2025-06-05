@@ -72,30 +72,28 @@ function EditPlayerPage() {
     }
   };
 
-  const formStyle = { maxWidth: '600px', margin: '20px auto', padding: '20px', background: '#fff', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' };
-  const inputGroupStyle = { marginBottom: '1.25rem' };
+  // formStyle and inputGroupStyle constants are removed, using CSS classes instead.
 
   if (loading) {
     return <LoadingSpinner text={`Loading player data for ID ${playerId}...`} />;
   }
 
-  // If there was an error during the initial fetch, and not during submit
-  if (error && !isSubmitting) {
+  // Handling for initial fetch error - if name is not set, implies fetch failed before form could be displayed
+  if (error && !isSubmitting && !name) {
     return (
-        <div style={formStyle}>
-            <h2 style={{textAlign: 'center', color: 'red'}}>Error</h2>
+        <div className="form-card text-center"> {/* Centering content in the card */}
+            <h2 className="text-center mb-3">Error Loading Player</h2>
             <p className="error-message">{error}</p>
-            <button onClick={() => navigate('/players')} className="button-secondary">Back to Player List</button>
+            <button onClick={() => navigate('/players')} className="button-secondary mt-3">Back to Player List</button>
         </div>
     );
   }
 
-
   return (
-    <div style={formStyle}>
-      <h2 style={{textAlign: 'center', marginBottom: '1.5rem'}}>Edit Player (ID: {playerId})</h2>
+    <div className="form-card"> {/* Applied .form-card class */}
+      <h2 className="text-center mb-3">Edit Player (ID: {playerId})</h2> {/* Applied utility classes */}
       <form onSubmit={handleSubmit}>
-        <div style={inputGroupStyle}>
+        <div className="input-group"> {/* Applied .input-group class */}
           <label htmlFor="name">Player Name:</label>
           <input
             type="text"
@@ -104,10 +102,11 @@ function EditPlayerPage() {
             onChange={(e) => setName(e.target.value)}
             required
             disabled={isSubmitting}
+            // Inputs will use global styles from index.css
           />
         </div>
 
-        <div style={inputGroupStyle}>
+        <div className="input-group"> {/* Applied .input-group class */}
           <label htmlFor="marketValue">Market Value:</label>
           <input
             type="number"
@@ -121,9 +120,9 @@ function EditPlayerPage() {
           />
         </div>
 
-        <div style={inputGroupStyle}>
+        <div className="input-group"> {/* Applied .input-group class */}
           <label htmlFor="club">Assign to Club (Optional):</label>
-          <ClubDropdown
+          <ClubDropdown // This component should use global select styles
             selectedClubId={clubId}
             onChange={setClubId}
             disabled={isSubmitting || loading} // Disable if initial data is still loading
@@ -131,14 +130,17 @@ function EditPlayerPage() {
           />
         </div>
 
-        {error && isSubmitting && <p className="error-message mt-2">{error}</p>}
+        {/* Display submission error here */}
+        {error && isSubmitting && <p className="error-message text-center mt-2">{error}</p>}
+        {/* Show error if form was populated but submission failed after fields were loaded */}
+        {error && !isSubmitting && name && <p className="error-message text-center mt-2">{error}</p>}
+
 
         {isSubmitting && <LoadingSpinner text="Updating player..." />}
 
         <button
             type="submit"
-            className="button-primary mt-3"
-            style={{width: '100%', padding: '12px'}}
+            className="button-primary w-100 button-lg mt-3" // Applied utility classes for styling
             disabled={isSubmitting || loading} // Disable if initial data is loading
         >
           {isSubmitting ? 'Processing...' : 'Update Player'}
