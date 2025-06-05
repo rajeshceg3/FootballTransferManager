@@ -9,9 +9,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -40,6 +43,10 @@ public class Transfer {
     @NotNull
     @Enumerated(EnumType.STRING)
     private TransferStatus status;
+
+    @Column(name = "initiation_timestamp", nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime initiationTimestamp;
 
     // Getters and setters
     public UUID getId() {
@@ -80,5 +87,13 @@ public class Transfer {
 
     public void setStatus(TransferStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getInitiationTimestamp() {
+        return initiationTimestamp;
+    }
+
+    public void setInitiationTimestamp(LocalDateTime initiationTimestamp) {
+        this.initiationTimestamp = initiationTimestamp;
     }
 }

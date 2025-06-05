@@ -41,69 +41,71 @@ function PlayerListPage() {
     }
   };
 
-  // Basic table styling - consider moving to CSS file for more complex styling
-  const tableStyle = { width: '100%', borderCollapse: 'collapse', marginTop: '20px' };
-  const thStyle = { borderBottom: '2px solid #ddd', padding: '12px', textAlign: 'left', backgroundColor: '#f8f9fa'};
-  const tdStyle = { borderBottom: '1px solid #eee', padding: '10px' };
-  const actionButtonStyle = { marginRight: '8px', padding: '6px 10px', fontSize: '0.85rem' };
+  // Inline styles (tableStyle, thStyle, tdStyle, actionButtonStyle) are removed.
+  // Styles will be handled by index.css (table, .table-responsive, .page-header, .empty-state-container)
 
   if (loading) {
     return <LoadingSpinner text="Loading players..." />;
   }
 
   return (
-    <div className="container mt-3">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+    <div className="container mt-3 mb-3"> {/* Added mb-3 */}
+      <div className="page-header">
         <h2>Manage Players</h2>
         <Link to="/players/new" className="button-link button-primary">
           Create New Player
         </Link>
       </div>
 
-      {error && <p className="error-message">{error}</p>}
+      {error && <p className="error-message text-center">{error}</p>} {/* Added text-center */}
 
-      {players.length === 0 && !loading && !error && (
-        <p>No players found. <Link to="/players/new">Create one now!</Link></p>
-      )}
-
-      {players.length > 0 && (
-        <table style={tableStyle}>
-          <thead>
-            <tr>
-              <th style={thStyle}>ID</th>
-              <th style={thStyle}>Name</th>
-              <th style={thStyle}>Market Value</th>
-              <th style={thStyle}>Current Club</th>
-              <th style={thStyle}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {players.map(player => (
-              <tr key={player.id}>
-                <td style={tdStyle}>{player.id}</td>
-                <td style={tdStyle}>{player.name}</td>
-                <td style={tdStyle}>${player.marketValue?.toLocaleString() || 'N/A'}</td>
-                <td style={tdStyle}>{player.club?.name || 'Unassigned'}</td>
-                <td style={tdStyle}>
-                  <button
-                    onClick={() => navigate(`/players/edit/${player.id}`)}
-                    className="button-secondary"
-                    style={actionButtonStyle}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeletePlayer(player.id)}
-                    className="button-danger"
-                    style={actionButtonStyle}
-                  >
-                    Delete
-                  </button>
-                </td>
+      {players.length === 0 && !loading && !error ? (
+        <div className="empty-state-container">
+          <p>No players found in the system.</p>
+          <Link to="/players/new" className="button-link button-primary">
+            Register First Player
+          </Link>
+        </div>
+      ) : players.length > 0 && (
+        <div className="table-responsive">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Market Value</th>
+                <th>Current Club</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {players.map(player => (
+                <tr key={player.id}>
+                  <td>{player.id}</td>
+                  <td>{player.name}</td>
+                  <td>${player.marketValue?.toLocaleString() || 'N/A'}</td>
+                  <td>{player.club?.name || 'Unassigned'}</td>
+                  <td>
+                    <button
+                      onClick={() => navigate(`/players/edit/${player.id}`)}
+                      className="button-secondary"
+                      // Inline style removed, relying on .table td .button-secondary from index.css
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeletePlayer(player.id)}
+                      className="button-danger"
+                      // Inline style removed, relying on .table td .button-danger from index.css
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
