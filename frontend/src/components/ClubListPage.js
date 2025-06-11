@@ -29,12 +29,15 @@ function ClubListPage() {
 
   const handleDeleteClub = async (clubId) => {
     if (window.confirm('Are you sure you want to delete this club? This may affect players and transfers associated with it.')) {
+      setLoading(true); // Indicate loading state
+      setError(null);   // Clear previous errors
       try {
         await axios.delete(`/api/v1/clubs/${clubId}`);
-        fetchClubs(); // Refresh club list
+        fetchClubs(); // Refresh club list, also resets loading state
       } catch (err) {
         console.error("Error deleting club:", err);
         setError(err.response?.data?.message || 'Failed to delete club. It might have associated players or be involved in transfers.');
+        setLoading(false); // Ensure loading is false on error
       }
     }
   };

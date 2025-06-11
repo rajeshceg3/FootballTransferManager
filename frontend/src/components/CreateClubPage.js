@@ -7,25 +7,32 @@ function CreateClubPage() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [budget, setBudget] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // For general/server errors
+  const [fieldErrors, setFieldErrors] = useState({}); // For specific field errors
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
+    setFieldErrors({}); // Clear previous field errors
     setIsSubmitting(true);
 
+    let errors = {};
     if (!name.trim()) {
-      setError('Club name is required.');
-      setIsSubmitting(false);
-      return;
+      errors.name = 'Club name is required.';
     }
 
     const parsedBudget = parseFloat(budget);
-    if (!budget.trim() || isNaN(parsedBudget) || parsedBudget < 0) {
-        setError('Budget must be a valid positive number.');
-        setIsSubmitting(false);
-        return;
+    if (!budget.trim()) {
+      errors.budget = 'Budget is required.';
+    } else if (isNaN(parsedBudget) || parsedBudget < 0) {
+      errors.budget = 'Budget must be a valid positive number.';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setIsSubmitting(false);
+      return;
     }
 
     const payload = {
@@ -56,11 +63,12 @@ function CreateClubPage() {
             type="text"
             id="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => { setName(e.target.value); setFieldErrors(prev => ({...prev, name: null})); }}
             required
             disabled={isSubmitting}
-            // Inputs will use global styles from index.css
+            className={fieldErrors.name ? 'input-error' : ''}
           />
+          {fieldErrors.name && <p className="error-message-inline">{fieldErrors.name}</p>}
         </div>
 
         <div className="input-group"> {/* Applied .input-group class */}
@@ -69,23 +77,28 @@ function CreateClubPage() {
             type="number"
             id="budget"
             value={budget}
-            onChange={(e) => setBudget(e.target.value)}
+            onChange={(e) => { setBudget(e.target.value); setFieldErrors(prev => ({...prev, budget: null})); }}
             required
             min="0"
             step="10000"
             placeholder="e.g., 100000000"
             disabled={isSubmitting}
+            className={fieldErrors.budget ? 'input-error' : ''}
           />
+          {fieldErrors.budget && <p className="error-message-inline">{fieldErrors.budget}</p>}
         </div>
 
-        {error && <p className="error-message text-center mt-2">{error}</p>} {/* Added text-center */}
+        {error && <p className="error-message text-center mt-2">{error}</p>}
+        {Object.keys(fieldErrors).length > 0 && !error && (
+             <p className="error-message text-center mt-2">Please correct the highlighted fields.</p>
+        )}
 
         {isSubmitting && <LoadingSpinner text="Creating club..." />}
 
         <button
             type="submit"
             className="button-primary w-100 button-lg mt-3" // Applied utility classes for styling
-            disabled={isSubmitting}
+            disabled={isSubmitting || Object.keys(fieldErrors).some(key => fieldErrors[key] !== null)}
         >
           {isSubmitting ? 'Processing...' : 'Create Club'}
         </button>
