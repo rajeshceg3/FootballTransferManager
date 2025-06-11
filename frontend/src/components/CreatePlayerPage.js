@@ -9,25 +9,30 @@ function CreatePlayerPage() {
   const [name, setName] = useState('');
   const [marketValue, setMarketValue] = useState('');
   const [clubId, setClubId] = useState(''); // Can be empty if player is unassigned
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // For general/server errors
+  const [fieldErrors, setFieldErrors] = useState({}); // For specific field errors
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
+    setFieldErrors({}); // Clear previous field errors
     setIsSubmitting(true);
 
+    let errors = {};
     if (!name.trim()) {
-      setError('Player name is required.');
-      setIsSubmitting(false);
-      return;
+      errors.name = 'Player name is required.';
     }
 
     const parsedMarketValue = parseFloat(marketValue);
     if (marketValue.trim() && (isNaN(parsedMarketValue) || parsedMarketValue < 0)) {
-        setError('Market value must be a valid positive number or empty.');
-        setIsSubmitting(false);
-        return;
+      errors.marketValue = 'Market value must be a valid positive number or empty.';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setIsSubmitting(false);
+      return;
     }
 
     const payload = {
@@ -59,11 +64,12 @@ function CreatePlayerPage() {
             type="text"
             id="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => { setName(e.target.value); setFieldErrors(prev => ({...prev, name: null})); }}
             required
             disabled={isSubmitting}
-            // Inputs will use global styles from index.css
+            className={fieldErrors.name ? 'input-error' : ''}
           />
+          {fieldErrors.name && <p className="error-message-inline">{fieldErrors.name}</p>}
         </div>
 
         <div className="input-group"> {/* Applied .input-group class */}
@@ -72,12 +78,14 @@ function CreatePlayerPage() {
             type="number"
             id="marketValue"
             value={marketValue}
-            onChange={(e) => setMarketValue(e.target.value)}
+            onChange={(e) => { setMarketValue(e.target.value); setFieldErrors(prev => ({...prev, marketValue: null})); }}
             min="0"
             step="1000"
             placeholder="e.g., 5000000"
             disabled={isSubmitting}
+            className={fieldErrors.marketValue ? 'input-error' : ''}
           />
+          {fieldErrors.marketValue && <p className="error-message-inline">{fieldErrors.marketValue}</p>}
         </div>
 
         <div className="input-group"> {/* Applied .input-group class */}
@@ -90,14 +98,17 @@ function CreatePlayerPage() {
           />
         </div>
 
-        {error && <p className="error-message text-center mt-2">{error}</p>} {/* Added text-center */}
+        {error && <p className="error-message text-center mt-2">{error}</p>}
+        {Object.keys(fieldErrors).length > 0 && !error && ( // Display a general message if there are field errors but no general error
+            <p className="error-message text-center mt-2">Please correct the highlighted fields.</p>
+        )}
 
         {isSubmitting && <LoadingSpinner text="Creating player..." />}
 
         <button
             type="submit"
             className="button-primary w-100 button-lg mt-3" // Applied utility classes for styling
-            disabled={isSubmitting}
+            disabled={isSubmitting || Object.keys(fieldErrors).some(key => fieldErrors[key] !== null)}
         >
           {isSubmitting ? 'Processing...' : 'Create Player'}
         </button>

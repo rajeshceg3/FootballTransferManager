@@ -30,13 +30,16 @@ function PlayerListPage() {
   const handleDeletePlayer = async (playerId) => {
     // Simple confirmation, enhance with a modal for better UX
     if (window.confirm('Are you sure you want to delete this player? This action cannot be undone.')) {
+      setLoading(true); // Indicate loading state during deletion
+      setError(null); // Clear previous errors
       try {
         await axios.delete(`/api/v1/players/${playerId}`);
-        // Refresh player list
+        // Refresh player list, fetchPlayers will reset loading and error states
         fetchPlayers();
       } catch (err) {
         console.error("Error deleting player:", err);
         setError(err.response?.data?.message || 'Failed to delete player. They might be involved in active transfers.');
+        setLoading(false); // Ensure loading is false on error
       }
     }
   };

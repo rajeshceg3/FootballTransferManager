@@ -13,12 +13,14 @@ function EditPlayerPage() {
   const [clubId, setClubId] = useState('');
 
   const [loading, setLoading] = useState(true); // For fetching initial data
-  const [error, setError] = useState(null); // For any error (fetch or submit)
+  const [fetchError, setFetchError] = useState(null); // Separate error for initial data fetching
+  const [submitError, setSubmitError] = useState(null); // Separate error for form submission
+  const [fieldErrors, setFieldErrors] = useState({}); // For specific field validation errors
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchPlayerData = useCallback(async () => {
     setLoading(true);
-    setError(null);
+    setFetchError(null);
     try {
       const response = await axios.get(`/api/v1/players/${playerId}`);
       const player = response.data;
@@ -27,7 +29,7 @@ function EditPlayerPage() {
       setClubId(player.club?.id || ''); // Set to current club ID or empty string
     } catch (err) {
       console.error("Error fetching player data:", err);
-      setError(err.response?.data?.message || `Failed to fetch data for player ID ${playerId}.`);
+      setFetchError(err.response?.data?.message || `Failed to fetch data for player ID ${playerId}.`);
     } finally {
       setLoading(false);
     }
@@ -39,20 +41,24 @@ function EditPlayerPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(null);
+    setSubmitError(null);
+    setFieldErrors({});
     setIsSubmitting(true);
 
+    let errors = {};
     if (!name.trim()) {
-      setError('Player name is required.');
-      setIsSubmitting(false);
-      return;
+      errors.name = 'Player name is required.';
     }
 
     const parsedMarketValue = parseFloat(marketValue);
     if (marketValue.trim() && (isNaN(parsedMarketValue) || parsedMarketValue < 0)) {
-        setError('Market value must be a valid positive number or empty.');
-        setIsSubmitting(false);
-        return;
+      errors.marketValue = 'Market value must be a valid positive number or empty.';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setIsSubmitting(false);
+      return;
     }
 
     const payload = {
@@ -66,7 +72,7 @@ function EditPlayerPage() {
       navigate('/players'); // Navigate to player list page
     } catch (err) {
       console.error("Error updating player:", err);
-      setError(err.response?.data?.message || 'Failed to update player. Please try again.');
+      setSubmitError(err.response?.data?.message || 'Failed to update player. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -78,70 +84,72 @@ function EditPlayerPage() {
     return <LoadingSpinner text={`Loading player data for ID ${playerId}...`} />;
   }
 
-  // Handling for initial fetch error - if name is not set, implies fetch failed before form could be displayed
-  if (error && !isSubmitting && !name) {
+  if (fetchError) { // Display fetch error prominently if it occurs
     return (
-        <div className="form-card text-center"> {/* Centering content in the card */}
+        <div className="form-card text-center">
             <h2 className="text-center mb-3">Error Loading Player</h2>
-            <p className="error-message">{error}</p>
+            <p className="error-message">{fetchError}</p>
             <button onClick={() => navigate('/players')} className="button-secondary mt-3">Back to Player List</button>
+            <button onClick={fetchPlayerData} className="button-primary mt-2 ms-2">Try Again</button>
         </div>
     );
   }
 
   return (
-    <div className="form-card"> {/* Applied .form-card class */}
-      <h2 className="text-center mb-3">Edit Player (ID: {playerId})</h2> {/* Applied utility classes */}
+    <div className="form-card">
+      <h2 className="text-center mb-3">Edit Player (ID: {playerId})</h2>
       <form onSubmit={handleSubmit}>
-        <div className="input-group"> {/* Applied .input-group class */}
+        <div className="input-group">
           <label htmlFor="name">Player Name:</label>
           <input
             type="text"
             id="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => { setName(e.target.value); setFieldErrors(prev => ({...prev, name: null})); }}
             required
-            disabled={isSubmitting}
-            // Inputs will use global styles from index.css
+            disabled={isSubmitting || loading}
+            className={fieldErrors.name ? 'input-error' : ''}
           />
+          {fieldErrors.name && <p className="error-message-inline">{fieldErrors.name}</p>}
         </div>
 
-        <div className="input-group"> {/* Applied .input-group class */}
+        <div className="input-group">
           <label htmlFor="marketValue">Market Value:</label>
           <input
             type="number"
             id="marketValue"
             value={marketValue}
-            onChange={(e) => setMarketValue(e.target.value)}
+            onChange={(e) => { setMarketValue(e.target.value); setFieldErrors(prev => ({...prev, marketValue: null})); }}
             min="0"
             step="1000"
             placeholder="e.g., 5000000"
-            disabled={isSubmitting}
+            disabled={isSubmitting || loading}
+            className={fieldErrors.marketValue ? 'input-error' : ''}
           />
+          {fieldErrors.marketValue && <p className="error-message-inline">{fieldErrors.marketValue}</p>}
         </div>
 
-        <div className="input-group"> {/* Applied .input-group class */}
+        <div className="input-group">
           <label htmlFor="club">Assign to Club (Optional):</label>
-          <ClubDropdown // This component should use global select styles
+          <ClubDropdown
             selectedClubId={clubId}
             onChange={setClubId}
-            disabled={isSubmitting || loading} // Disable if initial data is still loading
+            disabled={isSubmitting || loading}
             label="Select Club (Optional)"
           />
         </div>
 
-        {/* Display submission error here */}
-        {error && isSubmitting && <p className="error-message text-center mt-2">{error}</p>}
-        {/* Show error if form was populated but submission failed after fields were loaded */}
-        {error && !isSubmitting && name && <p className="error-message text-center mt-2">{error}</p>}
-
+        {submitError && <p className="error-message text-center mt-2">{submitError}</p>}
+        {Object.keys(fieldErrors).length > 0 && !submitError && (
+            <p className="error-message text-center mt-2">Please correct the highlighted fields.</p>
+        )}
 
         {isSubmitting && <LoadingSpinner text="Updating player..." />}
 
         <button
             type="submit"
-            className="button-primary w-100 button-lg mt-3" // Applied utility classes for styling
-            disabled={isSubmitting || loading} // Disable if initial data is loading
+            className="button-primary w-100 button-lg mt-3"
+            disabled={isSubmitting || loading || Object.keys(fieldErrors).some(key => fieldErrors[key] !== null)}
         >
           {isSubmitting ? 'Processing...' : 'Update Player'}
         </button>
