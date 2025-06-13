@@ -5,8 +5,8 @@ com/transfersystem/service/PlayerService.class
 com/transfersystem/controller/ClubController.class
 com/transfersystem/dto/ContractClauseDto.class
 com/transfersystem/model/Transfer.class
-com/transfersystem/TransferSystemApplication.class
 com/transfersystem/exception/InsufficientBudgetException.class
+com/transfersystem/TransferSystemApplication.class
 com/transfersystem/controller/GlobalExceptionHandler.class
 com/transfersystem/repository/PlayerRepository.class
 com/transfersystem/controller/PlayerController.class

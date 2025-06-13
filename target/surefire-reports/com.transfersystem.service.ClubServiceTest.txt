@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.transfersystem.service.ClubServiceTest
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.160 s -- in com.transfersystem.service.ClubServiceTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.052 s -- in com.transfersystem.service.ClubServiceTest
