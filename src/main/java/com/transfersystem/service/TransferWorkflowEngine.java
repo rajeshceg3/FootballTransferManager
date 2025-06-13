@@ -8,9 +8,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransferWorkflowEngine {
 
-    // TODO: Implement offer expiry (e.g., a scheduled task to check transfers
-    // in SUBMITTED/NEGOTIATION state older than 72 hours and move them to an EXPIRED status).
-    // This could be part of a new TransferScheduledService or similar.
+    // TODO: Implement offer expiry. This would typically involve:
+    // 1. Adding an 'offerExpiryDate' field to the Transfer entity.
+    // 2. A scheduled task (e.g., using Spring's @Scheduled) that periodically queries for Transfers
+    //    where 'status' is SUBMITTED or NEGOTIATION and 'offerExpiryDate' has passed.
+    // 3. For expired offers, the status could be automatically transitioned to a new 'EXPIRED' status
+    //    or back to 'DRAFT', potentially notifying relevant parties.
+    // This is a significant feature enhancement beyond simple TODO resolution.
 
     private final TransferRepository transferRepository;
 
@@ -73,7 +77,10 @@ public class TransferWorkflowEngine {
         }
         transfer.setStatus(TransferStatus.CANCELED);
         // TODO: If ContractClauses are persisted and linked to this transfer, ensure they are deleted upon cancellation.
-        // This would typically involve @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) on the Transfer entity's clauses list.
+        // NOTE: As per current PRD (v1), ContractClauseDto is used for request/response and not directly persisted
+        // as a list of entities within the Transfer object. If this changes in future versions where ContractClauses
+        // become JPA entities linked to a Transfer, then logic to handle their lifecycle (e.g., deletion on
+        // transfer cancellation) would be needed here.
         return transferRepository.save(transfer);
     }
 }
