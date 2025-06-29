@@ -54,9 +54,11 @@ function TransferDetailsPage() {
     setIsSubmittingAction(true);
     // setActionError(null); // Replaced by toast
     try {
-      const response = await axios.patch(`/api/v1/transfers/${transferId}/${actionPath}`);
-      setTransfer(response.data);
-      addToast(`Action '${actionPath}' successful!`, 'success');
+      // const response = await axios.patch(`/api/v1/transfers/${transferId}/${actionPath}`);
+      // setTransfer(response.data); // Replaced by fetchTransferDetails below
+      await axios.patch(`/api/v1/transfers/${transferId}/${actionPath}`);
+      addToast(`Action '${actionPath}' successful! Refreshing details...`, 'success');
+      fetchTransferDetails(); // Refresh data to get the latest status and available actions
     } catch (err) {
       console.error(`Error during action '${actionPath}':`, err);
       let errorMessage = `Failed to perform action '${actionPath}'. Please try again.`;
@@ -103,24 +105,43 @@ function TransferDetailsPage() {
 
   const renderButtons = () => {
     const buttons = [];
-    const addMargin = buttons.length > 0 ? 'ml-2' : ''; // Utility class for margin
+    // Helper to add buttons with consistent margin
+    const addButton = (key, text, actionPath, styleType = 'primary') => {
+      const marginClass = buttons.length > 0 ? 'ml-2' : '';
+      buttons.push(
+        <button
+          key={key}
+          onClick={() => handleWorkflowAction(actionPath)}
+          className={`button-${styleType} ${marginClass}`}
+          disabled={isSubmittingAction}
+        >
+          {isSubmittingAction ? 'Processing...' : text}
+        </button>
+      );
+    };
 
-    if (transfer.status === 'DRAFT') {
-      buttons.push(<button key="submit" onClick={() => handleWorkflowAction('submit')} className={`button-primary ${addMargin}`} disabled={isSubmittingAction}>{isSubmittingAction ? 'Processing...' : 'Submit Transfer'}</button>);
-    }
-    if (transfer.status === 'SUBMITTED') {
-      buttons.push(<button key="negotiate" onClick={() => handleWorkflowAction('negotiate')} className={`button-primary ${addMargin}`} disabled={isSubmittingAction}>{isSubmittingAction ? 'Processing...' : 'Move to Negotiation'}</button>);
-    }
-    if (transfer.status === 'NEGOTIATION') {
-      buttons.push(<button key="approve" onClick={() => handleWorkflowAction('approve')} className={`button-success ${addMargin}`} disabled={isSubmittingAction}>{isSubmittingAction ? 'Processing...' : 'Approve Transfer'}</button>);
-    }
-    if (transfer.status === 'APPROVED') {
-      buttons.push(<button key="complete" onClick={() => handleWorkflowAction('complete')} className={`button-success ${addMargin}`} disabled={isSubmittingAction}>{isSubmittingAction ? 'Processing...' : 'Complete Transfer'}</button>);
-    }
-    // Always add cancel button if applicable, ensuring margin is applied based on *previous* buttons
-    if (['DRAFT', 'SUBMITTED', 'NEGOTIATION'].includes(transfer.status)) {
-      const cancelMargin = buttons.length > 0 ? 'ml-2' : '';
-      buttons.push(<button key="cancel" onClick={() => handleWorkflowAction('cancel')} className={`button-danger ${cancelMargin}`} disabled={isSubmittingAction}>{isSubmittingAction ? 'Processing...' : 'Cancel Transfer'}</button>);
+    switch (transfer.status) {
+      case 'DRAFT':
+        addButton('submit', 'Submit Transfer', 'submit', 'primary');
+        addButton('cancel', 'Cancel Transfer', 'cancel', 'danger');
+        break;
+      case 'SUBMITTED':
+        addButton('approve', 'Approve Transfer', 'approve', 'success');
+        addButton('negotiate', 'Move to Negotiation', 'negotiate', 'primary');
+        addButton('reject', 'Reject Transfer', 'cancel', 'danger'); // "Reject" uses 'cancel' endpoint
+        break;
+      case 'NEGOTIATION':
+        addButton('approve', 'Approve Transfer', 'approve', 'success');
+        addButton('reject', 'Reject Transfer', 'cancel', 'danger'); // "Reject" uses 'cancel' endpoint
+        addButton('cancel', 'Cancel Transfer', 'cancel', 'danger');
+        break;
+      case 'APPROVED':
+        addButton('complete', 'Complete Transfer', 'complete', 'success');
+        addButton('cancel', 'Cancel Transfer', 'cancel', 'danger');
+        break;
+      // For COMPLETED, CANCELLED, REJECTED, no buttons are shown, handled by the message below.
+      default:
+        break;
     }
     return buttons;
   };
@@ -162,8 +183,8 @@ function TransferDetailsPage() {
         </div>
       )}
 
-      {(transfer.status === 'COMPLETED' || transfer.status === 'CANCELLED') ? (
-        <p className="text-center mt-3" style={{fontWeight: 'bold'}}>This transfer is {transfer.status.toLowerCase()} and no further actions are available.</p>
+      {(transfer.status === 'COMPLETED' || transfer.status === 'CANCELLED' || transfer.status === 'REJECTED') ? (
+        <p className="text-center mt-3" style={{fontWeight: 'bold'}}>This transfer is {transfer.status?.toLowerCase()} and no further actions are available.</p>
       ) : (
         <div className="action-buttons-container">
           <h3 className="h5 mb-3">Workflow Actions</h3> {/* Using h5 for smaller heading and mb-3 */}

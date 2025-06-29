@@ -17,8 +17,6 @@ function TransferListPage() {
   const [sortOrder, setSortOrder] = useState('desc'); // Default sort order (newest first)
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10); // Default items per page
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10); // Default items per page
 
   useEffect(() => {
     const fetchTransfers = async () => {
@@ -121,9 +119,16 @@ function TransferListPage() {
           <label htmlFor="statusFilter" className="form-label">Filter by Status:</label>
           <select id="statusFilter" name="statusFilter" className="form-select" value={statusFilter} onChange={handleFilterChange}>
             <option value="">All Statuses</option>
-            <option value="PENDING">Pending</option>
+            <option value="DRAFT">Draft</option>
+            <option value="SUBMITTED">Submitted</option>
+            <option value="NEGOTIATION">Negotiation</option>
             <option value="APPROVED">Approved</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="CANCELLED">Cancelled</option>
             <option value="REJECTED">Rejected</option>
+            {/* PENDING was there before, but it's not in the list of states from TransferWorkflowEngine.java.
+                Keeping it commented out in case it's a valid status from another context or future use.
+            <option value="PENDING">Pending</option> */}
           </select>
         </div>
         <div className="col-md-3">
