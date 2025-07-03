@@ -1,4 +1,21 @@
 /* Global Resets and Base Styles */
+:root {
+  --primary-color: #007BFF;
+  --primary-darker-hover: #0056b3; /*  Existing link hover, good for buttons too */
+  --secondary-color: #6C757D;
+  --secondary-darker-hover: #545b62; /* Darker gray for hover */
+  --accent-color: #FFC107;
+  --light-gray-bg: #F8F9FA;    /* New body background */
+  --medium-gray-bg: #E9ECEF;   /* Existing footer, button-secondary bg */
+  --dark-text-color: #212529;   /* Common dark gray/black for text */
+  --white-text-color: #FFFFFF;
+  --heading-color: #1a253c; /* Existing heading color, good contrast */
+  --link-color: var(--primary-color);
+  --link-hover-color: var(--primary-darker-hover);
+  --border-color-light: #dee2e6; /* Existing table border */
+  --border-color-medium: #ced4da; /* Existing input border */
+}
+
 *,
 *::before,
 *::after {
@@ -8,14 +25,12 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f4f7f9; /* Light grey background */
-  color: #333; /* Default text color */
-  line-height: 1.6;
+  background-color: var(--light-gray-bg);
+  color: var(--dark-text-color);
+  line-height: 1.7;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -39,28 +54,34 @@ code {
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
-  color: #1a253c; /* Darker blue for headings */
+  color: var(--heading-color);
   margin-top: 1.5rem;
   margin-bottom: 1rem;
 }
 
-h1 { font-size: 2.2rem; }
-h2 { font-size: 1.8rem; }
-h3 { font-size: 1.5rem; }
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
 
 /* Paragraphs */
-p {
-  margin-bottom: 1rem;
+p,
+ul,
+ol {
+  margin-bottom: 1.5rem;
 }
 
 /* Links */
 a {
-  color: #007bff; /* Standard link blue */
+  color: var(--link-color);
   text-decoration: none;
+  transition: all 0.2s ease-in-out;
 }
 a:hover {
   text-decoration: underline;
-  color: #0056b3; /* Darker blue on hover */
+  color: var(--link-hover-color);
 }
 
 /* Buttons - General Styling */
@@ -77,8 +98,7 @@ button, .button-link { /* .button-link for Link components styled as buttons */
   user-select: none;
   border: 1px solid transparent;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-              border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 button:disabled, .button-link:disabled {
@@ -88,24 +108,24 @@ button:disabled, .button-link:disabled {
 
 /* Primary Button Style */
 .button-primary {
-  color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
+  color: var(--white-text-color);
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 .button-primary:hover {
-  background-color: #0069d9;
-  border-color: #0062cc;
+  background-color: var(--primary-darker-hover);
+  border-color: var(--primary-darker-hover);
 }
 
 /* Secondary/Default Button Style */
 .button-secondary {
-  color: #333;
-  background-color: #e9ecef;
-  border-color: #ced4da;
+  color: var(--white-text-color);
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
 }
 .button-secondary:hover {
-  background-color: #dae0e5;
-  border-color: #c2c9d1;
+  background-color: var(--secondary-darker-hover);
+  border-color: var(--secondary-darker-hover);
 }
 
 /* Danger Button Style */
@@ -135,8 +155,8 @@ button:disabled, .button-link:disabled {
 label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #495057;
+  font-weight: 600; /* Made labels bolder */
+  color: var(--dark-text-color); /* Adjusted for better contrast if bg is light */
 }
 
 input[type="text"],
@@ -150,10 +170,10 @@ textarea {
   padding: 0.5rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
+  color: var(--dark-text-color);
+  background-color: var(--white-text-color);
   background-clip: padding-box;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--border-color-medium);
   border-radius: 0.25rem;
   box-sizing: border-box; /* Important for width 100% */
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -165,9 +185,9 @@ input[type="email"]:focus,
 input[type="password"]:focus,
 select:focus,
 textarea:focus {
-  border-color: #80bdff;
+  border-color: var(--primary-color); /* Use primary color for focus border */
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Can adjust alpha of primary color */
 }
 
 select {
@@ -198,9 +218,14 @@ select {
 
 
 /* Utility Classes */
+.icon-text-spacing {
+  margin-right: 0.35rem;
+  vertical-align: text-bottom; /* Aligns icon better with text */
+}
+
 .container {
   width: 90%;
-  max-width: 1200px; /* Max width for larger screens */
+  max-width: 1280px; /* Max width for larger screens */
   margin-right: auto;
   margin-left: auto;
   padding-right: 15px;
@@ -222,23 +247,27 @@ select {
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   background-color: #fff; /* Optional: if tables should have a white background */
 }
 
 th, td {
-  padding: 0.75rem;
+  padding: 1rem; /* Increased padding for table cells */
   vertical-align: top;
-  border-top: 1px solid #dee2e6; /* Default border for rows */
+  border-top: 1px solid var(--border-color-light); /* Default border for rows */
   text-align: left;
 }
 
 thead th {
   vertical-align: bottom;
-  border-bottom: 2px solid #dee2e6; /* Heavier border for header bottom */
-  background-color: #f8f9fa; /* Light background for header */
-  color: #1a253c;
-  font-weight: 600;
+  border-bottom: 2px solid var(--border-color-light); /* Heavier border for header bottom */
+  background-color: var(--light-gray-bg); /* Light background for header */
+  color: var(--heading-color);
+  font-weight: 700; /* Made table headers bolder */
+}
+
+tbody tr {
+  transition: all 0.2s ease-in-out;
 }
 
 tbody tr:nth-of-type(odd) {
@@ -246,7 +275,9 @@ tbody tr:nth-of-type(odd) {
 }
 
 tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.05); /* Hover effect for rows */
+  background-color: var(--medium-gray-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 /* Status Badges */
@@ -263,20 +294,20 @@ tbody tr:hover {
   white-space: nowrap;
 }
 
-.status-DRAFT { background-color: #e0e0e0; color: #333; } /* Grey */
-.status-SUBMITTED { background-color: #ffc107; color: #333; } /* Amber/Gold */
-.status-NEGOTIATION { background-color: #17a2b8; color: white; } /* Info Blue */
-.status-APPROVED { background-color: #28a745; color: white; } /* Success Green (same as button) */
-.status-COMPLETED { background-color: #007bff; color: white; } /* Primary Blue */
-.status-CANCELLED { background-color: #dc3545; color: white; } /* Danger Red (same as button) */
-.status-REJECTED { background-color: #6c757d; color: white; } /* Secondary/Grey */
+.status-DRAFT { background-color: #e0e0e0; color: var(--dark-text-color); } /* Grey */
+.status-SUBMITTED { background-color: var(--accent-color); color: var(--dark-text-color); } /* Accent/Gold */
+.status-NEGOTIATION { background-color: #17a2b8; color: var(--white-text-color); } /* Info Blue */
+.status-APPROVED { background-color: #28a745; color: var(--white-text-color); } /* Success Green (same as button) */
+.status-COMPLETED { background-color: var(--primary-color); color: var(--white-text-color); } /* Primary Blue */
+.status-CANCELLED { background-color: #dc3545; color: var(--white-text-color); } /* Danger Red (same as button) */
+.status-REJECTED { background-color: var(--secondary-color); color: var(--white-text-color); } /* Secondary/Grey */
 /* Add more statuses based on TransferStatus.java if they exist */
 
 /* Header Styles */
 .app-header {
-  background-color: #1a253c; /* Dark blue background */
-  color: #ffffff;
-  padding: 1rem 0;
+  background-color: var(--primary-color);
+  color: var(--white-text-color);
+  padding: 1.5rem 0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -289,13 +320,13 @@ tbody tr:hover {
 
 .app-header-logo {
   margin: 0;
-  font-size: 1.75rem;
+  font-size: 2rem;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--white-text-color);
   text-decoration: none;
 }
 .app-header-logo:hover {
-  color: #e0e0e0; /* Slightly lighter on hover */
+  color: #e0e0e0; /* Slightly lighter on hover - can be a variable if needed */
   text-decoration: none;
 }
 
@@ -314,19 +345,19 @@ tbody tr:hover {
 }
 
 .app-header-nav-link {
-  color: #ffffff;
+  color: var(--white-text-color);
   margin: 0 10px; /* Spacing between links */
   text-decoration: none;
   font-size: 1rem;
-  padding: 0.5rem 0.25rem;
-  border-bottom: 2px solid transparent;
+  padding: 0.75rem 1rem;
+  border-bottom: 3px solid transparent; /* Adjusted thickness for consistency */
   transition: border-bottom 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
 .app-header-nav-link:hover,
 .app-header-nav-link.active { /* Style for active NavLink */
-  color: #00aeff; /* Brighter blue for hover/active */
-  border-bottom: 2px solid #00aeff; /* Highlight with border */
+  color: var(--accent-color);
+  border-bottom: 3px solid var(--accent-color);
   text-decoration: none;
 }
 
@@ -393,16 +424,21 @@ tbody tr:hover {
 .details-card {
   max-width: 750px;
   margin: 1.5rem auto; /* Using utility class mt-3, mb-3 might be an alternative in component */
-  padding: 20px;
+  padding: 1.5rem;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: all 0.3s ease-in-out;
+}
+.details-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
 .detail-section {
-  margin-bottom: 1.5rem; /* Increased margin */
-  padding-bottom: 1.5rem; /* Increased padding */
-  border-bottom: 1px solid #eee;
+  margin-bottom: 2rem; /* Increased margin */
+  padding-bottom: 2rem; /* Increased padding */
+  border-bottom: 1px solid var(--border-color-light);
 }
 .detail-section:last-of-type { /* Remove border for the last section */
   border-bottom: none;
@@ -421,15 +457,17 @@ tbody tr:hover {
 
 .detail-label {
   font-weight: bold;
-  color: #333;
+  color: var(--dark-text-color);
   margin-right: 10px;
   flex-shrink: 0; /* Prevent label from shrinking */
+  font-size: 1rem; /* Ensured font size */
 }
 
 .detail-value {
-  color: #555;
+  color: var(--dark-text-color); /* Ensuring readability */
   text-align: right;
   word-break: break-word; /* Break long words/IDs */
+  font-size: 1rem; /* Ensured font size */
 }
 
 .clauses-list {
@@ -439,14 +477,14 @@ tbody tr:hover {
 }
 
 .clause-item {
-  background: #f9f9f9;
-  padding: 10px 12px; /* Adjusted padding */
+  background: var(--light-gray-bg); /* Consistent light background */
+  padding: 1rem; /* Increased padding */
   border-radius: 4px;
   margin-bottom: 8px; /* Increased margin */
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color-light);
 }
 .clause-item strong { /* Make type, percentage, amount labels bold within clause item */
-    color: #333;
+    color: var(--dark-text-color);
 }
 .clause-item span { /* Spacing for multiple details in one clause item */
     margin-left: 15px;
@@ -459,7 +497,7 @@ tbody tr:hover {
 .action-buttons-container {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--border-color-medium);
 }
 
 /* Utility classes for spacing if not already present or need more specific ones */
@@ -471,15 +509,20 @@ tbody tr:hover {
 .form-card {
   max-width: 700px;
   margin: 1.5rem auto;
-  padding: 25px; /* Slightly more padding for forms */
+  padding: 1.5rem; /* Standardized padding */
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: all 0.3s ease-in-out;
+}
+.form-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
 /* Input Group (already have label and input styles, this is for spacing) */
 .input-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.75rem; /* Increased margin for more separation */
 }
 .input-group label { /* Ensure label has some space if input is not display block or is side-by-side */
   margin-bottom: 0.5rem; /* Already there globally, but good to note */
@@ -487,17 +530,17 @@ tbody tr:hover {
 
 /* Clause Section in Forms */
 .clause-section {
-  border: 1px solid #e0e0e0;
-  padding: 20px; /* Increased padding */
+  border: 1px solid var(--border-color-light);
+  padding: 1.5rem; /* Standardized padding */
   margin-top: 25px; /* Increased margin */
   border-radius: 5px;
-  background: #fdfdfd; /* Slightly off-white */
+  background: var(--white-text-color); /* Changed from off-white to white */
 }
 .clause-section h3 { /* Specific styling for heading within clause section */
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 1.2rem; /* Matching subtask description */
-  color: #333;
+  color: var(--heading-color);
 }
 
 .clause-item-row {
@@ -547,7 +590,7 @@ tbody tr:hover {
 
 .empty-state-container p {
   font-size: 1.1rem;
-  color: #555;
+  color: var(--dark-text-color);
   margin-bottom: 1rem;
 }
 
@@ -584,7 +627,7 @@ tbody tr:hover {
   flex-grow: 1;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-  background-color: #ffffff; /* White background for the main content area */
+  background-color: var(--white-text-color); /* White background for the main content area */
 }
 /* Ensure container within main content has some vertical breathing room if pages don't add it */
 .app-main-content .container {
@@ -593,23 +636,49 @@ tbody tr:hover {
 
 /* Footer Styles */
 .app-footer {
-  background-color: #e9ecef; /* Light grey */
-  color: #495057; /* Dark grey text */
-  padding: 1.5rem 0;
+  background-color: var(--medium-gray-bg);
+  color: var(--dark-text-color);
+  padding: 2rem 0;
   text-align: center;
-  border-top: 1px solid #ced4da; /* Subtle top border */
+  border-top: 1px solid var(--border-color-medium); /* Subtle top border */
   margin-top: auto; /* Pushes footer to bottom in App.js flex container */
 }
 
 .app-footer .container p { /* Targeting p within footer's container for specificity */
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 .app-footer a { /* Example if links were added to footer */
-  color: #007bff;
+  color: var(--link-color);
 }
 .app-footer a:hover {
-  color: #0056b3;
+  color: var(--link-hover-color);
+}
+
+/* Loading Spinner Styles */
+.loading-spinner {
+  display: flex;
+  flex-direction: column; /* Stack spinner and text vertically */
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  color: var(--dark-text-color); /* For the text below spinner */
+  text-align: center;
+}
+
+.loading-spinner-visual {
+  border: 5px solid var(--light-gray-bg); /* Light grey for the track */
+  border-top: 5px solid var(--primary-color); /* Primary color for the spinner part */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 0.75rem; /* Space between spinner and text */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 
