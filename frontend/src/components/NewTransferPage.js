@@ -252,7 +252,9 @@ function NewTransferPage() {
                     className={`form-control ${fieldErrors.clauses && fieldErrors.clauses[index]?.amount ? 'input-error' : ''}`}
                   />
                 </div>
-                <button type="button" onClick={() => handleRemoveClause(index)} className="button-danger ms-2" disabled={isSubmitting}>Remove</button>
+                <button type="button" onClick={() => handleRemoveClause(index)} className="button-danger ms-2" disabled={isSubmitting}>
+                  <span className="material-icons icon-text-spacing">remove_circle_outline</span>Remove
+                </button>
               </div>
               {/* Display clause-specific errors more cleanly */}
               {fieldErrors.clauses && fieldErrors.clauses[index] && (
@@ -267,7 +269,9 @@ function NewTransferPage() {
           ))}
           <div className="clause-actions">
             {/* Smaller button style for add is in .clause-actions .button-success */}
-            <button type="button" onClick={handleAddClause} className="button-success" disabled={isSubmitting}>Add Clause</button>
+            <button type="button" onClick={handleAddClause} className="button-success" disabled={isSubmitting}>
+              <span className="material-icons icon-text-spacing">add</span>Add Clause
+            </button>
           </div>
         </div>
 

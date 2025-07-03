@@ -56,6 +56,7 @@ function PlayerListPage() {
       <div className="page-header">
         <h2>Manage Players</h2>
         <Link to="/players/new" className="button-link button-primary">
+          <span className="material-icons icon-text-spacing">add_circle</span>
           Create New Player
         </Link>
       </div>
@@ -66,6 +67,7 @@ function PlayerListPage() {
         <div className="empty-state-container">
           <p>No players found in the system.</p>
           <Link to="/players/new" className="button-link button-primary">
+            <span className="material-icons icon-text-spacing">add_circle</span>
             Register First Player
           </Link>
         </div>
@@ -94,6 +96,7 @@ function PlayerListPage() {
                       className="button-secondary"
                       // Inline style removed, relying on .table td .button-secondary from index.css
                     >
+                      <span className="material-icons icon-text-spacing">edit</span>
                       Edit
                     </button>
                     <button
@@ -101,6 +104,7 @@ function PlayerListPage() {
                       className="button-danger"
                       // Inline style removed, relying on .table td .button-danger from index.css
                     >
+                      <span className="material-icons icon-text-spacing">delete</span>
                       Delete
                     </button>
                   </td>

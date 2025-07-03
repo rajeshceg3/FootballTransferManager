@@ -158,6 +158,7 @@ function TransferListPage() {
           <p>No transfers match your filters/sorting, or no transfers to display yet. Be the first to make a move!</p>
           {/* button-link and button-primary are from index.css */}
           <Link to="/transfer/new" className="button-link button-primary">
+            <span className="material-icons icon-text-spacing">post_add</span>
             Initiate New Transfer
           </Link>
         </div>

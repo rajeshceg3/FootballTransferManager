@@ -54,6 +54,7 @@ function ClubListPage() {
       <div className="page-header">
         <h2>Manage Clubs</h2>
         <Link to="/clubs/new" className="button-link button-primary">
+          <span className="material-icons icon-text-spacing">add_circle</span>
           Create New Club
         </Link>
       </div>
@@ -64,6 +65,7 @@ function ClubListPage() {
         <div className="empty-state-container">
           <p>No clubs found at the moment.</p>
           <Link to="/clubs/new" className="button-link button-primary">
+            <span className="material-icons icon-text-spacing">add_circle</span>
             Add Your First Club
           </Link>
         </div>
@@ -90,6 +92,7 @@ function ClubListPage() {
                       className="button-secondary"
                       // Inline style removed, relying on .table td .button-secondary from index.css
                     >
+                      <span className="material-icons icon-text-spacing">edit</span>
                       Edit
                     </button>
                     <button
@@ -97,6 +100,7 @@ function ClubListPage() {
                       className="button-danger"
                       // Inline style removed, relying on .table td .button-danger from index.css
                     >
+                      <span className="material-icons icon-text-spacing">delete</span>
                       Delete
                     </button>
                   </td>
